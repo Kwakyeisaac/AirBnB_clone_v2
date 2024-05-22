@@ -1,27 +1,35 @@
 #!/usr/bin/python3
 """
-starts a Flask web application
+start Flask application
 """
 
-from flask import Flask, render_template
-from models import *
-from models import storage
+from flask import Flask
 app = Flask(__name__)
 
 
-@app.route('/hbnb_filters', strict_slashes=False)
-def filters():
-    """display a HTML page like 6-index.html from static"""
-    states = storage.all("State").values()
-    amenities = storage.all("Amenity").values()
-    return render_template('10-hbnb_filters.html', states=states,
-                           amenities=amenities)
+@app.route('/', strict_slashes=False)
+def index():
+    """returns Hello HBNB!"""
+    return 'Hello HBNB!'
 
 
-@app.teardown_appcontext
-def teardown_db(exception):
-    """closes the storage on teardown"""
-    storage.close()
+@app.route('/hbnb', strict_slashes=False)
+def hbnb():
+    """returns HBNB"""
+    return 'HBNB'
+
+
+@app.route('/c/<text>', strict_slashes=False)
+def cisfun(text):
+    """display “C ” followed by the value of the text variable"""
+    return 'C ' + text.replace('_', ' ')
+
+
+@app.route('/python', strict_slashes=False)
+@app.route('/python/<text>', strict_slashes=False)
+def pythoniscool(text='is cool'):
+    """display “Python ”, followed by the value of the text variable"""
+    return 'Python ' + text.replace('_', ' ')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='5000')
